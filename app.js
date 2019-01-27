@@ -170,7 +170,7 @@ Maze.prototype.generator = function([x1, x2], [y1, y2], desiredRes){
 };
 
 Maze.prototype.render = function(){
-	ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+	ctx.clearRect(0, 0, WIDTH, HEIGHT);
 	let numRows = this.contents.length;
 	let numCols = this.contents[0].length;
 	let cellWidth = WIDTH/numCols;
