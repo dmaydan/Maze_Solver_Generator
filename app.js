@@ -9,7 +9,7 @@ canvas.height = HEIGHT;
 var Cell = function(cellType){
 	this.value = cellType;
 	this.row = null;
-	this.column = null;
+	this.col = null;
 	this.distance = null;
 	this.pred = null;
 	this.bfsColor = "white";
@@ -42,10 +42,11 @@ Cell.prototype.setPos = function(row, col){
 };
 
 Cell.prototype.getNeighbors = function(){
-	// Not necessarily legal neighbors
 	row = this.row;
 	col = this.col;
-	return [[row-1,col-1], [row-1,col], [row-1,col+1], [row,col-1], [row,col+1], [row+1,col-1], [row+1,col], [row+1,col+1]];
+	// Not necessarily legal neighbors
+  // return [[row-1,col-1], [row-1,col], [row-1,col+1], [row,col-1], [row,col+1], [row+1,col-1], [row+1,col], [row+1,col+1]];
+	return [[row-1,col], [row,col-1], [row,col+1], [row+1,col]];
 };
 
 Cell.prototype.setDistance = function(distance){
@@ -187,6 +188,18 @@ Maze.prototype.render = function(){
 	}
 };
 
+Maze.prototype.renderCell = function(cell){
+	let numRows = this.contents.length;
+	let numCols = this.contents[0].length;
+	let cellWidth = WIDTH/numCols;
+	let cellHeight = HEIGHT/numRows;
+	let cellLength = cellWidth > cellHeight ? cellHeight : cellWidth;
+  ctx.fillStyle = cell.getColor()
+  let rectX = cell.col * cellLength;
+  let rectY = cell.row * cellLength;
+  ctx.fillRect(rectX, rectY, cellLength, cellLength);
+};
+
 Maze.prototype.getEmptySlots = function(){
 	let emptySlots = [];
 	for (let row = 0; row < this.contents.length; row++){
@@ -237,7 +250,7 @@ Maze.prototype.shortestBFS = function(){
 
 Maze.prototype.bfsTraverse = function(currentCell){
 	currentCell.value = "P";
-	this.render();
+	this.renderCell(currentCell);
 };
 
 Maze.prototype.clearSolution = function(){
